@@ -1,80 +1,144 @@
 import numpy as np
 import torch
-from torch.utils.data import DataLoader, WeightedRandomSampler
-import os
-from pathlib import Path
-from dataset import ECGStructuredNPYDataset
-from models import ECG_CNN1D
 import torch.nn as nn
+from torch.utils.data import Dataset, DataLoader
+from sklearn.metrics import accuracy_score, recall_score, f1_score
 
-from training import evaluate, train_one_epoch
+
+# ===============================
+# Dataset
+# ===============================
+
+class ECGDataset(Dataset):
+    def __init__(self, npy_file):
+        data = np.load(npy_file, allow_pickle=True)
+
+        self.X = torch.from_numpy(np.array(data["x"], dtype=np.float32, copy=True))
+        self.y = torch.from_numpy(np.array(data["label"], dtype=np.float32, copy=True))
+
+        # reshape -> (N,1,2500)
+        self.X = self.X.unsqueeze(1)
+
+    def __len__(self):
+        return len(self.X)
+
+    def __getitem__(self, idx):
+        return self.X[idx], self.y[idx]
+
+# ===============================
+# CNN Model
+# ===============================
+
+class ECGCNN(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        self.conv1 = nn.Conv1d(1, 16, kernel_size=7, padding=3)
+        self.conv2 = nn.Conv1d(16, 32, kernel_size=7, padding=3)
+        self.conv3 = nn.Conv1d(32, 64, kernel_size=7, padding=3)
+
+        self.pool = nn.MaxPool1d(2)
+
+        self.fc1 = nn.Linear(64 * 312, 64)
+        self.fc2 = nn.Linear(64, 1)
+
+    def forward(self, x):
+
+        x = self.pool(torch.relu(self.conv1(x)))
+        x = self.pool(torch.relu(self.conv2(x)))
+        x = self.pool(torch.relu(self.conv3(x)))
+
+        x = x.flatten(1)
+
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+
+        return x
 
 
-def main():
-    SPLIT_DIR = os.environ.get("SPLIT_DIR", "split_out")
-    train_path = os.path.join(SPLIT_DIR, "train.npy")
-    test_path  = os.path.join(SPLIT_DIR, "test.npy")
+# ===============================
+# Load dataset
+# ===============================
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"[INFO] device={device} | SPLIT_DIR={SPLIT_DIR}")
+train_dataset = ECGDataset("split_out/train.npy")
+test_dataset = ECGDataset("split_out/test.npy")
 
-    train_ds = ECGStructuredNPYDataset(train_path)
-    test_ds  = ECGStructuredNPYDataset(test_path)
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=64)
 
-    # WeightedRandomSampler to balance classes in TRAIN only
-    y_train = train_ds.y
-    class_counts = np.bincount(y_train, minlength=2)  # [count0, count1]
-    # weight per sample = 1 / count(class)
-    weights = np.where(y_train == 0, 1.0 / max(class_counts[0], 1), 1.0 / max(class_counts[1], 1)).astype(np.float64)
-    sampler = WeightedRandomSampler(weights=torch.from_numpy(weights), num_samples=len(weights), replacement=True)
 
-    train_loader = DataLoader(train_ds, batch_size=64, sampler=sampler, num_workers=2, pin_memory=True)
-    test_loader  = DataLoader(test_ds, batch_size=128, shuffle=False, num_workers=2, pin_memory=True)
+# ===============================
+# Device
+# ===============================
 
-    model = ECG_CNN1D(in_ch=1, base_ch=32, dropout=0.2).to(device)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # BCEWithLogitsLoss with pos_weight (optional bonus)
-    # pos_weight > 1 increases penalty for missing positives (hypo=1)
-    pos = float(class_counts[1])
-    neg = float(class_counts[0])
-    pos_weight = torch.tensor([neg / max(pos, 1.0)], dtype=torch.float32, device=device)
-    criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+model = ECGCNN().to(device)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+criterion = nn.BCEWithLogitsLoss()
 
-    best_f1 = -1.0
-    patience = 15
-    patience_left = patience
-    thresh = 0.5
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
-    for epoch in range(1, 101):
-        tr_loss = train_one_epoch(model, train_loader, device, optimizer, criterion)
-        global_m, per_patient = evaluate(model, test_loader, device, thresh=thresh)
 
-        print(f"Epoch {epoch:3d} | TrainLoss {tr_loss:.4f} | "
-              f"Acc {global_m['accuracy']*100:.2f}% | "
-              f"Recall {global_m['recall']:.4f} | "
-              f"Prec {global_m['precision']:.4f} | "
-              f"Spec {global_m['specificity']:.4f} | "
-              f"F1 {global_m['f1']:.4f}")
+# ===============================
+# Training loop
+# ===============================
 
-        # Print per-patient summary (compact)
-        for pid, m in per_patient.items():
-            print(f"  - {pid}: Recall {m['recall']:.4f} | F1 {m['f1']:.4f} | Acc {m['accuracy']*100:.2f}%")
+for epoch in range(20):
 
-        # Early stopping on F1 (more meaningful than accuracy with imbalance)
-        if global_m["f1"] > best_f1 + 1e-4:
-            best_f1 = global_m["f1"]
-            patience_left = patience
-            torch.save({"model": model.state_dict(), "epoch": epoch, "best_f1": best_f1}, "best_cnn.pt")
-            print(f"[INFO] Saved best checkpoint (best_f1={best_f1:.4f})")
-        else:
-            patience_left -= 1
-            if patience_left <= 0:
-                print("[INFO] Early stopping.")
-                break
+    model.train()
+    train_loss = 0
 
-    print(f"[DONE] Best F1 = {best_f1:.4f} | checkpoint: best_cnn.pt")
+    for X, y in train_loader:
 
-if __name__ == "__main__":
-    main()
+        X = X.to(device)
+        y = y.to(device)
+
+        optimizer.zero_grad()
+
+        outputs = model(X).squeeze()
+
+        loss = criterion(outputs, y)
+
+        loss.backward()
+
+        optimizer.step()
+
+        train_loss += loss.item()
+
+    train_loss /= len(train_loader)
+
+
+    # ===============================
+    # Evaluation
+    # ===============================
+
+    model.eval()
+
+    preds = []
+    labels = []
+
+    with torch.no_grad():
+
+        for X, y in test_loader:
+
+            X = X.to(device)
+
+            outputs = model(X).squeeze()
+
+            prob = torch.sigmoid(outputs)
+
+            pred = (prob > 0.5).cpu().numpy()
+
+            preds.extend(pred)
+            labels.extend(y.numpy())
+
+    acc = accuracy_score(labels, preds)
+    recall = recall_score(labels, preds)
+    f1 = f1_score(labels, preds)
+
+    print(f"\nEpoch {epoch+1}")
+    print(f"Train Loss: {train_loss:.4f}")
+    print(f"Accuracy: {acc:.4f}")
+    print(f"Recall: {recall:.4f}")
+    print(f"F1: {f1:.4f}")
