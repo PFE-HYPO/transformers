@@ -1,0 +1,112 @@
+(venv) (base) mohamedamine@mc02-HP-Z1-Entry-Tower-G6:~/pfe/cnn/transformers$ python3 cnn_only.py 
+
+Loaded split_out/train.npy
+X shape: torch.Size([52105, 1, 2500])
+Hypo ratio: 42.42%
+
+Loaded split_out/test.npy
+X shape: torch.Size([11891, 1, 2500])
+Hypo ratio: 57.95%
+
+Device: cuda
+Train normal: 30000
+Train hypo:   22105
+pos_weight:   1.3572
+
+Epoch 1
+Train Loss: 0.7682
+[thr=0.50] Acc: 0.4598 | Recall: 0.3812 | Precision: 0.5488 | F1: 0.4499
+[best thr=0.09] Acc: 0.5796 | Recall: 1.0000 | Precision: 0.5796 | F1: 0.7338
+Best model updated.
+
+Epoch 2
+Train Loss: 0.7274
+[thr=0.50] Acc: 0.5207 | Recall: 0.5205 | Precision: 0.5996 | F1: 0.5573
+[best thr=0.01] Acc: 0.5795 | Recall: 1.0000 | Precision: 0.5795 | F1: 0.7338
+No improvement. Patience: 1/15
+
+Epoch 3
+Train Loss: 0.6927
+[thr=0.50] Acc: 0.5439 | Recall: 0.4509 | Precision: 0.6547 | F1: 0.5340
+[best thr=0.01] Acc: 0.5727 | Recall: 0.9816 | Precision: 0.5772 | F1: 0.7270
+No improvement. Patience: 2/15
+
+Epoch 4
+Train Loss: 0.6447
+[thr=0.50] Acc: 0.5640 | Recall: 0.4729 | Precision: 0.6774 | F1: 0.5570
+[best thr=0.01] Acc: 0.5752 | Recall: 0.9824 | Precision: 0.5786 | F1: 0.7283
+No improvement. Patience: 3/15
+
+Epoch 5
+Train Loss: 0.5922
+[thr=0.50] Acc: 0.5623 | Recall: 0.4612 | Precision: 0.6805 | F1: 0.5498
+[best thr=0.01] Acc: 0.5751 | Recall: 0.9658 | Precision: 0.5801 | F1: 0.7248
+No improvement. Patience: 4/15
+
+Epoch 6
+Train Loss: 0.5393
+[thr=0.50] Acc: 0.5450 | Recall: 0.4800 | Precision: 0.6442 | F1: 0.5501
+[best thr=0.01] Acc: 0.5683 | Recall: 0.9192 | Precision: 0.5806 | F1: 0.7116
+No improvement. Patience: 5/15
+
+Epoch 7
+Train Loss: 0.4778
+[thr=0.50] Acc: 0.5772 | Recall: 0.5609 | Precision: 0.6589 | F1: 0.6059
+[best thr=0.01] Acc: 0.5767 | Recall: 0.9692 | Precision: 0.5807 | F1: 0.7263
+No improvement. Patience: 6/15
+
+Epoch 8
+Train Loss: 0.4192
+[thr=0.50] Acc: 0.5605 | Recall: 0.4774 | Precision: 0.6694 | F1: 0.5573
+[best thr=0.01] Acc: 0.5729 | Recall: 0.9060 | Precision: 0.5849 | F1: 0.7108
+No improvement. Patience: 7/15
+
+Epoch 9
+Train Loss: 0.3617
+[thr=0.50] Acc: 0.5466 | Recall: 0.4645 | Precision: 0.6530 | F1: 0.5429
+[best thr=0.01] Acc: 0.5682 | Recall: 0.8793 | Precision: 0.5848 | F1: 0.7024
+No improvement. Patience: 8/15
+
+Epoch 10
+Train Loss: 0.3122
+[thr=0.50] Acc: 0.5444 | Recall: 0.3699 | Precision: 0.7032 | F1: 0.4848
+[best thr=0.01] Acc: 0.5604 | Recall: 0.7903 | Precision: 0.5902 | F1: 0.6757
+No improvement. Patience: 9/15
+
+Epoch 11
+Train Loss: 0.2702
+[thr=0.50] Acc: 0.5513 | Recall: 0.4732 | Precision: 0.6567 | F1: 0.5501
+[best thr=0.01] Acc: 0.5631 | Recall: 0.8277 | Precision: 0.5873 | F1: 0.6871
+No improvement. Patience: 10/15
+
+Epoch 12
+Train Loss: 0.2365
+[thr=0.50] Acc: 0.5240 | Recall: 0.3683 | Precision: 0.6601 | F1: 0.4728
+[best thr=0.01] Acc: 0.5463 | Recall: 0.7186 | Precision: 0.5890 | F1: 0.6474
+No improvement. Patience: 11/15
+
+Epoch 13
+Train Loss: 0.2134
+[thr=0.50] Acc: 0.5651 | Recall: 0.5501 | Precision: 0.6467 | F1: 0.5945
+[best thr=0.01] Acc: 0.5693 | Recall: 0.8629 | Precision: 0.5874 | F1: 0.6990
+No improvement. Patience: 12/15
+
+Epoch 14
+Train Loss: 0.1904
+[thr=0.50] Acc: 0.5447 | Recall: 0.4512 | Precision: 0.6558 | F1: 0.5346
+[best thr=0.01] Acc: 0.5552 | Recall: 0.7614 | Precision: 0.5901 | F1: 0.6649
+No improvement. Patience: 13/15
+
+Epoch 15
+Train Loss: 0.1715
+[thr=0.50] Acc: 0.5270 | Recall: 0.3148 | Precision: 0.7061 | F1: 0.4354
+[best thr=0.01] Acc: 0.5505 | Recall: 0.6230 | Precision: 0.6098 | F1: 0.6163
+No improvement. Patience: 14/15
+
+================ FINAL BEST MODEL ================
+Best threshold: 0.09
+Accuracy:  0.5796
+Recall:    1.0000
+Precision: 0.5796
+F1-score:  0.7338
+(venv) (base) mohamedamine@mc02-HP-Z1-Entry-Tower-G6:~/pfe/cnn/transformers$   

@@ -1,0 +1,60 @@
+(venv) (base) mohamedamine@mc02-HP-Z1-Entry-Tower-G6:~/pfe/cnn/transformers$ python3 cnn_claude.py 
+
+Loaded split_out/train.npy
+Signals shape: torch.Size([52105, 1, 2500])
+Hypo ratio: 42.42%
+
+Loaded split_out/test.npy
+Signals shape: torch.Size([11891, 1, 2500])
+Hypo ratio: 57.95%
+Classe 0: 30000 | Classe 1: 22105 | pos_weight: 1.36
+Device: cuda
+Paramètres entraînables: 1,034,658
+Epoch [01/40] Loss: 0.7653 | Acc: 0.5083 | Recall: 0.3780 | F1: 0.4712 | AUC: 0.5035 ✅ saved
+Epoch [02/40] Loss: 0.7442 | Acc: 0.5626 | Recall: 0.5317 | F1: 0.5849 | AUC: 0.5582 ✅ saved
+Epoch [03/40] Loss: 0.7282 | Acc: 0.5648 | Recall: 0.4145 | F1: 0.5247 | AUC: 0.5932 
+Epoch [04/40] Loss: 0.7067 | Acc: 0.5676 | Recall: 0.3418 | F1: 0.4781 | AUC: 0.6084 
+Epoch [05/40] Loss: 0.6742 | Acc: 0.5296 | Recall: 0.2637 | F1: 0.3938 | AUC: 0.5609 
+Epoch [06/40] Loss: 0.6439 | Acc: 0.5455 | Recall: 0.3493 | F1: 0.4711 | AUC: 0.5674 
+Epoch [07/40] Loss: 0.6200 | Acc: 0.5169 | Recall: 0.2380 | F1: 0.3634 | AUC: 0.5470 
+Epoch [08/40] Loss: 0.5710 | Acc: 0.4993 | Recall: 0.1934 | F1: 0.3093 | AUC: 0.5258 
+Epoch [09/40] Loss: 0.5510 | Acc: 0.4958 | Recall: 0.1762 | F1: 0.2883 | AUC: 0.5334 
+Epoch [10/40] Loss: 0.5327 | Acc: 0.4298 | Recall: 0.0305 | F1: 0.0583 | AUC: 0.4516 
+Epoch [11/40] Loss: 0.5178 | Acc: 0.4428 | Recall: 0.0773 | F1: 0.1386 | AUC: 0.4757 
+Epoch [12/40] Loss: 0.5056 | Acc: 0.4376 | Recall: 0.0447 | F1: 0.0843 | AUC: 0.4824 
+Epoch [13/40] Loss: 0.4666 | Acc: 0.4344 | Recall: 0.0427 | F1: 0.0804 | AUC: 0.4502 
+Epoch [14/40] Loss: 0.4535 | Acc: 0.4497 | Recall: 0.0652 | F1: 0.1207 | AUC: 0.4754 
+Epoch [15/40] Loss: 0.4435 | Acc: 0.4325 | Recall: 0.0386 | F1: 0.0731 | AUC: 0.4658 
+Epoch [16/40] Loss: 0.4373 | Acc: 0.4265 | Recall: 0.0292 | F1: 0.0557 | AUC: 0.4690 
+Epoch [17/40] Loss: 0.4295 | Acc: 0.4429 | Recall: 0.0798 | F1: 0.1424 | AUC: 0.4438 
+Epoch [18/40] Loss: 0.4037 | Acc: 0.4343 | Recall: 0.0530 | F1: 0.0979 | AUC: 0.4508 
+Epoch [19/40] Loss: 0.3972 | Acc: 0.4395 | Recall: 0.0485 | F1: 0.0911 | AUC: 0.4606 
+Epoch [20/40] Loss: 0.3926 | Acc: 0.4361 | Recall: 0.0441 | F1: 0.0831 | AUC: 0.4547 
+Epoch [21/40] Loss: 0.3866 | Acc: 0.4350 | Recall: 0.0344 | F1: 0.0659 | AUC: 0.4661 
+Epoch [22/40] Loss: 0.3845 | Acc: 0.4466 | Recall: 0.0644 | F1: 0.1189 | AUC: 0.4710 
+Epoch [23/40] Loss: 0.3694 | Acc: 0.4327 | Recall: 0.0421 | F1: 0.0792 | AUC: 0.4593 
+Epoch [24/40] Loss: 0.3646 | Acc: 0.4364 | Recall: 0.0501 | F1: 0.0933 | AUC: 0.4620 
+Epoch [25/40] Loss: 0.3595 | Acc: 0.4301 | Recall: 0.0327 | F1: 0.0623 | AUC: 0.4478 
+Epoch [26/40] Loss: 0.3607 | Acc: 0.4376 | Recall: 0.0535 | F1: 0.0994 | AUC: 0.4606 
+Epoch [27/40] Loss: 0.3574 | Acc: 0.4356 | Recall: 0.0504 | F1: 0.0937 | AUC: 0.4466 
+Epoch [28/40] Loss: 0.3478 | Acc: 0.4348 | Recall: 0.0476 | F1: 0.0889 | AUC: 0.4490 
+Epoch [29/40] Loss: 0.3470 | Acc: 0.4318 | Recall: 0.0347 | F1: 0.0661 | AUC: 0.4486 
+Epoch [30/40] Loss: 0.3446 | Acc: 0.4376 | Recall: 0.0544 | F1: 0.1008 | AUC: 0.4572 
+Epoch [31/40] Loss: 0.3411 | Acc: 0.4322 | Recall: 0.0389 | F1: 0.0735 | AUC: 0.4502 
+Epoch [32/40] Loss: 0.3395 | Acc: 0.4316 | Recall: 0.0377 | F1: 0.0714 | AUC: 0.4467 
+Epoch [33/40] Loss: 0.3338 | Acc: 0.4343 | Recall: 0.0451 | F1: 0.0846 | AUC: 0.4512 
+Epoch [34/40] Loss: 0.3336 | Acc: 0.4287 | Recall: 0.0367 | F1: 0.0693 | AUC: 0.4470 
+Epoch [35/40] Loss: 0.3326 | Acc: 0.4307 | Recall: 0.0409 | F1: 0.0769 | AUC: 0.4458 
+Epoch [36/40] Loss: 0.3329 | Acc: 0.4308 | Recall: 0.0405 | F1: 0.0762 | AUC: 0.4439 
+Epoch [37/40] Loss: 0.3304 | Acc: 0.4333 | Recall: 0.0450 | F1: 0.0843 | AUC: 0.4500 
+Epoch [38/40] Loss: 0.3314 | Acc: 0.4313 | Recall: 0.0415 | F1: 0.0780 | AUC: 0.4499 
+Epoch [39/40] Loss: 0.3266 | Acc: 0.4309 | Recall: 0.0408 | F1: 0.0767 | AUC: 0.4458 
+Epoch [40/40] Loss: 0.3281 | Acc: 0.4304 | Recall: 0.0374 | F1: 0.0708 | AUC: 0.4446 
+
+🏆 Meilleur F1: 0.5849 — modèle sauvegardé dans checkpoints/best_model.pt
+
+📊 Résultats finaux (meilleur modèle):
+   Accuracy : 0.5626
+   Recall   : 0.5317
+   F1-Score : 0.5849
+   AUC-ROC  : 0.5582
